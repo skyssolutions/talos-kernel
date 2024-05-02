@@ -1,0 +1,43 @@
+name: turingrk1-kernel
+
+on:
+  push:
+    branches: [ 'main', 'release-*' ]
+    tags:
+      - "v*"
+
+jobs:
+  sbc:
+    runs-on: buildjet-16vcpu-ubuntu-2204-arm
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # need history for `git describe` to work for Talos `Makefile`
+          fetch-depth: 0
+          fetch-tags: true
+
+      - uses: docker/setup-buildx-action@v3
+        with:
+          buildkitd-config: .github/buildkitd.toml
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push turingrk1 kernel image
+        run: make
+        env:
+          PUSH: '1'
+          USERNAME: ${{ github.actor }}
+          PLATFORM: linux/arm64
+          PROGRESS: plain
+          CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/kernel:cache --cache-to=ghcr.io/${{ github.actor }}/kernel:cache"
