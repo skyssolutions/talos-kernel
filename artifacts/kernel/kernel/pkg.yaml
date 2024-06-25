@@ -5,18 +5,34 @@ dependencies:
   - stage: kernel-build
 steps:
   - env:
-      ARCH: arm64
+      ARCH: {{ if eq .ARCH "aarch64"}}arm64{{ else if eq .ARCH "x86_64" }}x86_64{{ else }}unsupported{{ end }}
     install:
       - |
         cd /src
 
         mkdir -p /rootfs/boot
-        mkdir -p /rootfs/dtb/rockchip
+        mkdir -p /rootfs/dtb
         mkdir -p /rootfs/certs
         cp /src/certs/signing_key.x509 /rootfs/certs/signing_key.x509
-
-        mv arch/arm64/boot/Image /rootfs/boot/vmlinuz
-        mv arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtb /rootfs/dtb/rockchip/rk3588-turing-rk1.dtb
+        case $ARCH in
+            x86_64)
+                mv arch/x86/boot/bzImage /rootfs/boot/vmlinuz
+            ;;
+            arm64)
+                mv arch/arm64/boot/vmlinuz.efi /rootfs/boot/vmlinuz
+                cd ./arch/arm64/boot/dts
+                for vendor in $(find . -not -path . -type d); do
+                  dest="/rootfs/dtb/$vendor"
+                  mkdir -v $dest
+                  find ./$vendor/* -type f -name "*.dtb" -exec cp {} $dest \;
+                done
+                cd -
+            ;;
+            *)
+                echo "unsupported arch ${ARCH}"
+                exit 1
+            ;;
+        esac
 
         export KERNELRELEASE=$(cat include/config/kernel.release)
         make -j $(nproc) modules_install DEPMOD=/toolchain/bin/depmod INSTALL_MOD_PATH=/rootfs INSTALL_MOD_STRIP=1

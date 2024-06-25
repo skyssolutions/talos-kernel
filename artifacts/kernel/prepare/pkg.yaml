@@ -10,7 +10,7 @@ steps:
         sha256: "{{ .linux_sha256 }}"
         sha512: "{{ .linux_sha512 }}"
     env:
-      ARCH: arm64
+      ARCH: {{ if eq .ARCH "aarch64"}}arm64{{ else if eq .ARCH "x86_64" }}x86_64{{ else }}unsupported{{ end }}
     prepare:
       - |
         tar -xJf linux.tar.xz --strip-components=1
