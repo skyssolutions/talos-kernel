@@ -1,0 +1,401 @@
+From patchwork Tue Jun 25 12:58:02 2024
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Patchwork-Submitter: Tvrtko Ursulin <tursulin@igalia.com>
+X-Patchwork-Id: 13711108
+Return-Path: 
+ <linux-arm-kernel-bounces+linux-arm-kernel=archiver.kernel.org@lists.infradead.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 024CFC30658
+	for <linux-arm-kernel@archiver.kernel.org>;
+ Tue, 25 Jun 2024 12:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=1zOlxzHp0smE9UfbcodciZvu33TYDM4Qa9pbUNbyMBc=; b=fw/S5UnMRUa2Ph82L5HbLrVI8B
+	+d3CzJk3TnNhnC7OeTyWlOHub/HIuwA7qNLUw9mDzAGPlfR5NO/TJu5/GtaU9k2RXcKWY8ympjKyn
+	DkHpkq4VCtP375bLuZNN13dJiDofNTh/AKuJosu6DqQDOUXuwGWKBLPuwOMHL4m3DgrB9VIyQYyD7
+	ykvIrbqrppMXGPUta5BrlGQaIILQYb4FO2IsACAixClDSreA+aiZaiYaDucH7KQld72ilfnqasAAg
+	or5IY5kKb8MQWnumdz81kHbqGQWKaWy2nAa6ukfvvED952SZzEA7WUJicdFE0SjjCookxAJPCChJZ
+	ME9R4TOQ==;
+Received: from localhost ([::1] helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sM5kr-00000002sJg-0OxJ;
+	Tue, 25 Jun 2024 12:58:37 +0000
+Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sM5kh-00000002sDy-0sJM
+	for linux-arm-kernel@lists.infradead.org;
+	Tue, 25 Jun 2024 12:58:29 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=1zOlxzHp0smE9UfbcodciZvu33TYDM4Qa9pbUNbyMBc=; b=l0pphxkQFC4KW/uenGEhMUEkcm
+	XpB0tL6qB6mak5eVAObHEjmdhoVGolx3KmJ5NuunL4j/OPvIRQa9GAochTiwJoPWs0Eiivm1v8GEx
+	jyqhCu+pxtxlGlo2aGOL/MIloUgtCIqudY7kU3e+0tiO+xnkpwlG8fP8XP86BJIZBO/qVb+Fw/ljA
+	uqM6+nuemrjoF7NfBvDylTSDRHYOgsc7T9nbaeSHR1Vt4vld5xDInfglha2FB28v+O9kjB/+3HMbk
+	N7b6IlnFkWW9Smx6eZr40I2ZKmyukkFoLXyu6Gfc+0jRUyWrjaKSTMCuu5XcHyzv1IsMXmmtbcDNv
+	/Afy8rDA==;
+Received: from [84.69.19.168] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sM5kV-007J4Y-Kc; Tue, 25 Jun 2024 14:58:15 +0200
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, =?utf-8?q?Ma=C3=ADr?=
+	=?utf-8?q?a_Canal?= <mcanal@igalia.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 1/2] numa: Add simple generic NUMA emulation
+Date: Tue, 25 Jun 2024 13:58:02 +0100
+Message-ID: <20240625125803.38038-2-tursulin@igalia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240625125803.38038-1-tursulin@igalia.com>
+References: <20240625125803.38038-1-tursulin@igalia.com>
+MIME-Version: 1.0
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20240625_055827_597142_CE27DC01 
+X-CRM114-Status: GOOD (  22.24  )
+X-BeenThere: linux-arm-kernel@lists.infradead.org
+X-Mailman-Version: 2.1.34
+Precedence: list
+List-Id: <linux-arm-kernel.lists.infradead.org>
+List-Unsubscribe: 
+ <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: 
+ <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: 
+ linux-arm-kernel-bounces+linux-arm-kernel=archiver.kernel.org@lists.infradead.org
+
+From: Maíra Canal <mcanal@igalia.com>
+
+Add some common code for splitting the memory into N emulated NUMA memory
+nodes.
+
+Individual architecture can then enable selecting this option and use the
+existing numa=fake=<N> kernel argument to enable it.
+
+Memory is always split into equally sized chunks.
+
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Co-developed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: “Rafael J. Wysocki" <rafael@kernel.org>
+---
+ drivers/base/Kconfig          |  7 ++++
+ drivers/base/Makefile         |  1 +
+ drivers/base/arch_numa.c      |  6 ++++
+ drivers/base/numa_emulation.c | 67 +++++++++++++++++++++++++++++++++++
+ drivers/base/numa_emulation.h | 21 +++++++++++
+ 5 files changed, 102 insertions(+)
+ create mode 100644 drivers/base/numa_emulation.c
+ create mode 100644 drivers/base/numa_emulation.h
+
+diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+index 2b8fd6bb7da0..1f60cd4dd057 100644
+--- a/drivers/base/Kconfig
++++ b/drivers/base/Kconfig
+@@ -230,6 +230,13 @@ config GENERIC_ARCH_NUMA
+ 	  Enable support for generic NUMA implementation. Currently, RISC-V
+ 	  and ARM64 use it.
+ 
++config GENERIC_ARCH_NUMA_EMULATION
++	bool
++	depends on GENERIC_ARCH_NUMA
++	help
++	  Enable NUMA emulation. Note that NUMA emulation will only be used if
++	  the machine has no NUMA node.
++
+ config FW_DEVLINK_SYNC_STATE_TIMEOUT
+ 	bool "sync_state() behavior defaults to timeout instead of strict"
+ 	help
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index 3079bfe53d04..34fcf5bd7370 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -25,6 +25,7 @@ obj-$(CONFIG_DEV_COREDUMP) += devcoredump.o
+ obj-$(CONFIG_GENERIC_MSI_IRQ) += platform-msi.o
+ obj-$(CONFIG_GENERIC_ARCH_TOPOLOGY) += arch_topology.o
+ obj-$(CONFIG_GENERIC_ARCH_NUMA) += arch_numa.o
++obj-$(CONFIG_GENERIC_ARCH_NUMA_EMULATION) += numa_emulation.o
+ obj-$(CONFIG_ACPI) += physical_location.o
+ 
+ obj-y			+= test/
+diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
+index 5b59d133b6af..6ad08f681b3c 100644
+--- a/drivers/base/arch_numa.c
++++ b/drivers/base/arch_numa.c
+@@ -15,6 +15,8 @@
+ 
+ #include <asm/sections.h>
+ 
++#include "numa_emulation.h"
++
+ struct pglist_data *node_data[MAX_NUMNODES] __read_mostly;
+ EXPORT_SYMBOL(node_data);
+ nodemask_t numa_nodes_parsed __initdata;
+@@ -30,6 +32,8 @@ static __init int numa_parse_early_param(char *opt)
+ 		return -EINVAL;
+ 	if (str_has_prefix(opt, "off"))
+ 		numa_off = true;
++	if (str_has_prefix(opt, "fake="))
++		return numa_emu_cmdline(opt + 5);
+ 
+ 	return 0;
+ }
+@@ -471,6 +475,8 @@ void __init arch_numa_init(void)
+ 			return;
+ 		if (acpi_disabled && !numa_init(of_numa_init))
+ 			return;
++		if (!numa_init(numa_emu_init))
++			return;
+ 	}
+ 
+ 	numa_init(dummy_numa_init);
+diff --git a/drivers/base/numa_emulation.c b/drivers/base/numa_emulation.c
+new file mode 100644
+index 000000000000..df652fa8351b
+--- /dev/null
++++ b/drivers/base/numa_emulation.c
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Simple NUMA emulation.
++ *
++ * Copyright © 2024 Raspberry Pi Ltd
++ *
++ * Author: Maíra Canal <mcanal@igalia.com>
++ * Author: Tvrtko Ursulin <tursulin@igalia.com>
++ */
++#include <linux/memblock.h>
++
++#include "numa_emulation.h"
++
++static unsigned int emu_nodes;
++
++int __init numa_emu_cmdline(char *str)
++{
++	int ret;
++
++	ret = kstrtouint(str, 10, &emu_nodes);
++	if (ret)
++		return ret;
++
++	if (emu_nodes > MAX_NUMNODES) {
++		pr_notice("numa=fake=%u too large, reducing to %u\n",
++			  emu_nodes, MAX_NUMNODES);
++		emu_nodes = MAX_NUMNODES;
++	}
++
++	return 0;
++}
++
++int __init numa_emu_init(void)
++{
++	phys_addr_t start, end;
++	unsigned long size;
++	unsigned int i;
++	int ret;
++
++	if (!emu_nodes)
++		return -EINVAL;
++
++	start = memblock_start_of_DRAM();
++	end = memblock_end_of_DRAM() - 1;
++
++	size = DIV_ROUND_DOWN_ULL(end - start + 1, emu_nodes);
++	size = PAGE_ALIGN_DOWN(size);
++
++	for (i = 0; i < emu_nodes; i++) {
++		u64 s, e;
++
++		s = start + i * size;
++		e = s + size - 1;
++
++		if (i == (emu_nodes - 1) && e != end)
++			e = end;
++
++		pr_info("Faking a node at [mem %pap-%pap]\n", &s, &e);
++		ret = numa_add_memblk(i, s, e + 1);
++		if (ret) {
++			pr_err("Failed to add fake NUMA node %d!\n", i);
++			break;
++		}
++	}
++
++	return ret;
++}
+diff --git a/drivers/base/numa_emulation.h b/drivers/base/numa_emulation.h
+new file mode 100644
+index 000000000000..62b38215a2f0
+--- /dev/null
++++ b/drivers/base/numa_emulation.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * NUMA emulation header
++ *
++ * Copyright © 2024 Raspberry Pi Ltd
++ */
++
++#ifdef CONFIG_GENERIC_ARCH_NUMA_EMULATION
++int numa_emu_cmdline(char *str);
++int __init numa_emu_init(void);
++#else
++static inline int numa_emu_cmdline(char *str)
++{
++	return -EINVAL;
++}
++
++static int __init numa_emu_init(void)
++{
++	return -EOPNOTSUPP;
++}
++#endif /* CONFIG_NUMA_EMU */
+
+From patchwork Tue Jun 25 12:58:03 2024
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Patchwork-Submitter: Tvrtko Ursulin <tursulin@igalia.com>
+X-Patchwork-Id: 13711107
+Return-Path: 
+ <linux-arm-kernel-bounces+linux-arm-kernel=archiver.kernel.org@lists.infradead.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3785C2BBCA
+	for <linux-arm-kernel@archiver.kernel.org>;
+ Tue, 25 Jun 2024 12:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=u73BM2k0P5V0AYjELtkiQ2BhOsIZOrApdWBJKOtljdU=; b=tpdECj4GM+P6Q6hokPrduyBB+G
+	aRg2IhlHvy/CpU8ejpU1auTHIqz7V+kTG9Ckj7x8yUNxe6mh/DcYcK5mxNGHZQ0txpbBUomXMuj5Y
+	kTYXmq7AsacdbHlbLTKISifwZ/DdK/1+RDbjDORN3fU3if+t4ZLL8NqDF79FLRJ8M90PykJ5w0+zB
+	ueaui75HU4TcqWT8WUwJKVOBfdUnHA0+5PWveZlitAgrOBbcBb2LsyUy5B4k7qp4fX9wBLlrJ1eUq
+	6GZRKNfCpeG9+IuQdoxPI39FIif1ogkGJApyFXP/2K61eWv8uRcLe/khB+ieXQnjnVyufY1WnW3Eh
+	zWFNLHIw==;
+Received: from localhost ([::1] helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sM5ko-00000002sIC-0op4;
+	Tue, 25 Jun 2024 12:58:34 +0000
+Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sM5kh-00000002sDz-0KXO
+	for linux-arm-kernel@lists.infradead.org;
+	Tue, 25 Jun 2024 12:58:29 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=u73BM2k0P5V0AYjELtkiQ2BhOsIZOrApdWBJKOtljdU=; b=cd0A3Mqxf8WtqGzNNBqSZzdhFe
+	51ANiA2VcZdEPlHP5VTbnLoyccrXwEHOYk97oHIgGPYcz8Vsj/w14T5ZQVYO2mko5ixw5gTzjtTnV
+	LRMVlcgu735PH73u4Mj71RUymizaVWyvpq6LQOJtiK89pXNmzfcv0hKxNR/yhoAoDvibeRtEwduo1
+	sz1omZjEiVSrHQn6HWWqpRe60/abE3kM/RdeCHHB75ALRjPl9SnhO52UYu/4/w5fBT7j/0+pI9E4A
+	mwwZcZCJsXNLj0Qvde6ghN9IhKW3qbmuoHj2r3ZAmUyQmNZdQ7oYz6ZSonONvXPSiCbLfQKgCqRVd
+	roJzfXaA==;
+Received: from [84.69.19.168] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sM5kW-007J4a-AU; Tue, 25 Jun 2024 14:58:16 +0200
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, =?utf-8?q?Ma=C3=ADr?=
+	=?utf-8?q?a_Canal?= <mcanal@igalia.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 2/2] arm64/numa: Add NUMA emulation for ARM64
+Date: Tue, 25 Jun 2024 13:58:03 +0100
+Message-ID: <20240625125803.38038-3-tursulin@igalia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240625125803.38038-1-tursulin@igalia.com>
+References: <20240625125803.38038-1-tursulin@igalia.com>
+MIME-Version: 1.0
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20240625_055827_597373_C25722B4 
+X-CRM114-Status: UNSURE (   9.88  )
+X-CRM114-Notice: Please train this message.
+X-BeenThere: linux-arm-kernel@lists.infradead.org
+X-Mailman-Version: 2.1.34
+Precedence: list
+List-Id: <linux-arm-kernel.lists.infradead.org>
+List-Unsubscribe: 
+ <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: 
+ <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: 
+ linux-arm-kernel-bounces+linux-arm-kernel=archiver.kernel.org@lists.infradead.org
+
+From: Maíra Canal <mcanal@igalia.com>
+
+Allow selecting NUMA emulation on arm64.
+
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: “Rafael J. Wysocki" <rafael@kernel.org>
+---
+ arch/arm64/Kconfig | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 8e80df015bdd..49c1cdc545d3 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1507,6 +1507,16 @@ config NODES_SHIFT
+ 	  Specify the maximum number of NUMA Nodes available on the target
+ 	  system.  Increases memory reserved to accommodate various tables.
+ 
++config NUMA_EMULATION
++	bool "NUMA emulation"
++	depends on NUMA
++	select GENERIC_ARCH_NUMA_EMULATION
++	help
++	  Enable NUMA emulation support. A flat machine will be split into
++	  virtual nodes when booted with "numa=fake=N", where N is the number
++	  of nodes, the system RAM will be split into N equal chunks, and
++	  assigned to each node.
++
+ source "kernel/Kconfig.hz"
+ 
+ config ARCH_SPARSEMEM_ENABLE

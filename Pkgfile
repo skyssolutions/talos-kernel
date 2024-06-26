@@ -6,9 +6,9 @@ vars:
   TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.7.0-2-g345db93
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-  linux_version: 6.6.33
-  linux_sha256: a13ebc20dc2a75722699949af74aa86a4ce5d544d6daaa6a7de4e8c81b40de97
-  linux_sha512: 445341c88c3976256c9f40149f62d73787808099c85e9cd6652a0b8e4ebfadc9ebe57169e5f7e586dc4d2c0679be58f688eadfcea575454465e8eda45261cc03
+  linux_version: 6.6.35
+  linux_sha256: fce3ee728712ed063aa8c14a8756c8ff8c7a46ba3827f61d2b04a73c7cf5dd9e
+  linux_sha512: a94a75eec75f43fcab56a425927eeb299ec8eb72a056b26e9c629ec66fc5b65badf0403612549dfd4bc01b620451924ec30b980403a47cf723e98ab57775b6d2
 labels:
   org.opencontainers.image.source: https://github.com/nberlee/kernel
 
