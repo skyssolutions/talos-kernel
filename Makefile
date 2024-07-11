@@ -59,7 +59,7 @@ TARGETS = kernel
 
 # help menu
 
-export define HELP_MENU_HEADER
+define HELP_MENU_HEADER
 # Getting Started
 
 To build this project, you must have the following installed:
@@ -76,11 +76,11 @@ Linux or enable experimental features in Docker GUI for Windows or Mac.
 
 To create a builder instance, run:
 
-	docker buildx create --name local --use
+    docker buildx create --name local --use
 
 If running builds that needs to be cached aggresively create a builder instance with the following:
 
-	docker buildx create --name local --use --config=config.toml
+    docker buildx create --name local --use --config=config.toml
 
 config.toml contents:
 
@@ -106,6 +106,8 @@ The registry and username can be overridden by exporting REGISTRY, and USERNAME
 respectively.
 
 endef
+
+export HELP_MENU_HEADER
 
 all: $(TARGETS)  ## Builds all targets defined.
 

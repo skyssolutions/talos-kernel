@@ -48,7 +48,7 @@ jobs:
           USERNAME: ${{ github.repository_owner }}
           PLATFORM: linux/${{ matrix.platform }}
           PROGRESS: plain
-          CI_ARGS: "--cache-from=ghcr.io/${{ github.repository_owner }}/talos-kernel:cache-${{ matrix.platform }} --cache-to=ghcr.io/${{ github.repository_owner }}/kernel:cache-${{ matrix.platform }} --tag=ghcr.io/${{ github.repository_owner }}/turingrk1-kernel:${{ matrix.platform }} --push=${PUSH}"
+          CI_ARGS: "--cache-from=ghcr.io/${{ github.repository_owner }}/talos-kernel:cache-${{ matrix.platform }} --cache-to=ghcr.io/${{ github.repository_owner }}/talos-kernel:cache-${{ matrix.platform }} --tag=ghcr.io/${{ github.repository_owner }}/talos-kernel:${{ matrix.platform }} --push=${PUSH}"
 
   merge:
     runs-on: buildjet-4vcpu-ubuntu-2204
@@ -74,6 +74,6 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx imagetools create \
-            --tag ghcr.io/${{ github.repository_owner }}/turingrk1-kernel:latest \
-            ghcr.io/${{ github.repository_owner }}/turingrk1-kernel:amd64 \
-            ghcr.io/${{ github.repository_owner }}/turingrk1-kernel:arm64
+            --tag ghcr.io/${{ github.repository_owner }}/talos-kernel:latest \
+            ghcr.io/${{ github.repository_owner }}/talos-kernel:amd64 \
+            ghcr.io/${{ github.repository_owner }}/talos-kernel:arm64
