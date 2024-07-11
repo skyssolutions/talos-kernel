@@ -54,7 +54,7 @@ jobs:
           USERNAME: library
           PLATFORM: linux/${{ matrix.platform }}
           PROGRESS: plain
-          IMAGE_REGISTRY: registry.skysolutions.fi
+          REGISTRY: registry.skysolutions.fi
           CI_ARGS: "--cache-from=registry.skysolutions.fi/library/talos-kernel:cache-${{ matrix.platform }} --cache-to=registry.skysolutions.fi/library/talos-kernel:cache-${{ matrix.platform }} --tag=registry.skysolutions.fi/library/talos-kernel:${{ matrix.platform }}"
 
   merge:
