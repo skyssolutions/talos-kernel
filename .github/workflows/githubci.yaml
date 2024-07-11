@@ -43,7 +43,7 @@ jobs:
       - name: Login to Harbor registry
         uses: docker/login-action@v3
         with:
-          registry: registry.skyssolutions.fi
+          registry: registry.skysolutions.fi
           username: ${{ secrets.HARBOR_USER }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
@@ -54,7 +54,7 @@ jobs:
           USERNAME: library
           PLATFORM: linux/${{ matrix.platform }}
           PROGRESS: plain
-          CI_ARGS: "--cache-from=registry.skyssolutions.fi/library/talos-kernel:cache-${{ matrix.platform }} --cache-to=registry.skyssolutions.fi/library/talos-kernel:cache-${{ matrix.platform }} --tag=registry.skyssolutions.fi/library/talos-kernel:${{ matrix.platform }}"
+          CI_ARGS: "--cache-from=registry.skysolutions.fi/library/talos-kernel:cache-${{ matrix.platform }} --cache-to=registry.skysolutions.fi/library/talos-kernel:cache-${{ matrix.platform }} --tag=registry.skysolutions.fi/library/talos-kernel:${{ matrix.platform }}"
 
   merge:
     runs-on: buildjet-4vcpu-ubuntu-2204
@@ -80,7 +80,7 @@ jobs:
       - name: Login to Harbor registry
         uses: docker/login-action@v3
         with:
-          registry: registry.skyssolutions.fi
+          registry: registry.skysolutions.fi
           username: ${{ secrets.HARBOR_USER }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
@@ -88,6 +88,6 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx imagetools create \
-            --tag registry.skyssolutions.fi/library/talos-kernel:latest \
-            registry.skyssolutions.fi/library/talos-kernel:amd64 \
-            registry.skyssolutions.fi/library/talos-kernel:arm64
+            --tag registry.skysolutions.fi/library/talos-kernel:latest \
+            registry.skysolutions.fi/library/talos-kernel:amd64 \
+            registry.skysolutions.fi/library/talos-kernel:arm64
