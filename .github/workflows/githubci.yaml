@@ -11,8 +11,12 @@ jobs:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        platform: [amd64, arm64]
-        runner: [buildjet-16vcpu-ubuntu-2204, buildjet-16vcpu-ubuntu-2204-arm]
+        include:
+          - platform: amd64
+            runner: buildjet-16vcpu-ubuntu-2204
+          - platform: arm64
+            runner: buildjet-16vcpu-ubuntu-2204-arm
+
 
     permissions:
       contents: read
