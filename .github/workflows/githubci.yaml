@@ -51,7 +51,7 @@ jobs:
           CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/kernel:cache-${{ matrix.platform }} --cache-to=ghcr.io/${{ github.actor }}/kernel:cache-${{ matrix.platform }} --tag=ghcr.io/${{ github.actor }}/turingrk1-kernel:${{ matrix.platform }} --push=${PUSH}"
 
   merge:
-    runs-on: buildjet-16vcpu-ubuntu-2204-x86
+    runs-on: buildjet-4vcpu-ubuntu-2204
     needs: build
     permissions:
       contents: read
