@@ -35,9 +35,11 @@ jobs:
 
       - name: Build and push turingrk1 kernel image
         run: make
+        matrix:
+          platform: ['amd64', 'arm64']
         env:
           PUSH: '1'
           USERNAME: ${{ github.actor }}
-          PLATFORM: linux/arm64
+          PLATFORM: linux/${{ matrix.platform }}
           PROGRESS: plain
-          CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/kernel:cache --cache-to=ghcr.io/${{ github.actor }}/kernel:cache"
+          CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/kernel:cache-${{ matrix.platform }} --cache-to=ghcr.io/${{ github.actor }}/kernel:cache-${{ matrix.platform }}"
