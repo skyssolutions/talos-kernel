@@ -48,7 +48,7 @@ jobs:
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/${{ matrix.platform }}
           PROGRESS: plain
-          CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/kernel:cache-${{ matrix.platform }} --cache-to=ghcr.io/${{ github.actor }}/kernel:cache-${{ matrix.platform }} --tag=ghcr.io/${{ github.actor }}/turingrk1-kernel:${{ matrix.platform }} --push=${PUSH}"
+          CI_ARGS: "--cache-from=ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}/talos-kernel:cache-${{ matrix.platform }} --cache-to=ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}/kernel:cache-${{ matrix.platform }} --tag=ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}/turingrk1-kernel:${{ matrix.platform }} --push=${PUSH}"
 
   merge:
     runs-on: buildjet-4vcpu-ubuntu-2204
@@ -74,6 +74,6 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx imagetools create \
-            --tag ghcr.io/${{ github.actor }}/turingrk1-kernel:latest \
-            ghcr.io/${{ github.actor }}/turingrk1-kernel:amd64 \
-            ghcr.io/${{ github.actor }}/turingrk1-kernel:arm64
+            --tag ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}/turingrk1-kernel:latest \
+            ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}/turingrk1-kernel:amd64 \
+            ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}/turingrk1-kernel:arm64
