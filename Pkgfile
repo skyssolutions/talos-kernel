@@ -10,5 +10,5 @@ vars:
   linux_sha256: b9676828b737e8fb8eaa5198303d35d35e8df019550be153c8a42c99afe0cdd5
   linux_sha512: 7dc497868b5b134eb2aa06e3e33aaae3c8026701ebea5b2183a35c0396576eda20f1d5af2d8468086fe0f9cf6691f2e3f3b3d6d03c5546bf734a8559cde5eabe
 labels:
-  org.opencontainers.image.source: https://github.com/nberlee/kernel
+  org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 
