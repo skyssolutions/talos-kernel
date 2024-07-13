@@ -27,8 +27,9 @@ steps:
       - |
         cd /src
 
-        make -j $(nproc)
+        make -j $(nproc) kernel
         make -j $(nproc) modules
+        make -j $(nproc) initramfs
 
         if [[ "${ARCH}" == "arm64" ]]; then
           echo "Compiling device-tree blobs"
