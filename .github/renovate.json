@@ -19,6 +19,15 @@
         },
         {
             "fileMatch": [
+                "Pkgfile"
+            ],
+            "matchStrings": [
+                "#\\s?renovate: ?\\s+depName=(?<depName>.+?)?\\s(?:.*_(?:version|VERSION):\\s+(?<currentValue>.*))"
+            ],
+            "datasourceTemplate": "docker"
+        },
+        {
+            "fileMatch": [
                 "Pkgfile",
                 "Makefile"
             ],
