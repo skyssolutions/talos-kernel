@@ -4,12 +4,12 @@ format: v1alpha2
 
 vars:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/tools
-  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.7.0-2-g345db93
+  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.8.0-alpha.0-6-g31ad71b
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-  linux_version: 6.6.36
-  linux_sha256: b9676828b737e8fb8eaa5198303d35d35e8df019550be153c8a42c99afe0cdd5
-  linux_sha512: 7dc497868b5b134eb2aa06e3e33aaae3c8026701ebea5b2183a35c0396576eda20f1d5af2d8468086fe0f9cf6691f2e3f3b3d6d03c5546bf734a8559cde5eabe
+  linux_version: 6.9.9
+  linux_sha256: 2be05b487eb239a3bf687d628a8f104177d09c310f00bcc2a5e50f1733421eb9
+  linux_sha512: b6f08a8254f62e184489c2822ceaa4d0dd4ef73f4c08a8458bc8ab4fb6ffcdee5218798360b4f53b684f73590c531dea90c9e488e0a6afbabb4e32b642746332
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 
