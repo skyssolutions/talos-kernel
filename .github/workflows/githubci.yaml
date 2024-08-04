@@ -1,4 +1,4 @@
-name: turingrk1-kernel
+name: kernel
 
 on:
   push:
