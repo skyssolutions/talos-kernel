@@ -18,9 +18,9 @@ jobs:
       matrix:
         include:
           - platform: amd64
-            runner: buildjet-16vcpu-ubuntu-2204
+            runner: buildjet-4vcpu-ubuntu-2204
           - platform: arm64
-            runner: buildjet-16vcpu-ubuntu-2204-arm
+            runner: buildjet-4vcpu-ubuntu-2204-arm
 
     permissions:
       contents: read
