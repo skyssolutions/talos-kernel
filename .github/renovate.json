@@ -28,12 +28,13 @@
         {
             "fileMatch": ["^/Pkgfile"],
             "matchStrings": [
-                "linux_version: (?<version>.*)\\nlinux_sha256: (?<sha256>[a-f0-9]{64})\\nlinux_sha512: (?<sha512>[a-f0-9]{128})"
+                "linux_version: (?<currentValue>.*)\\nlinux_sha256: (?<sha256>[a-f0-9]{64})\\nlinux_sha512: (?<sha512>[a-f0-9]{128})"
             ],
             "datasourceTemplate": "git-tags",
             "extractVersionTemplate": "^v(?<version>.*)$",
             "depNameTemplate": "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-            "versioningTemplate": "semver"
+            "versioningTemplate": "semver",
+            "currentValueTemplate": "{{currentValue}}"
         },
         {
             "fileMatch": [
