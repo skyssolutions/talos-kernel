@@ -8,8 +8,8 @@ vars:
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
   linux_version: 6.10.3
-  linux_sha256: 2be05b487eb239a3bf687d628a8f104177d09c310f00bcc2a5e50f1733421eb9
-  linux_sha512: b6f08a8254f62e184489c2822ceaa4d0dd4ef73f4c08a8458bc8ab4fb6ffcdee5218798360b4f53b684f73590c531dea90c9e488e0a6afbabb4e32b642746332
+  linux_sha256: fa5f22fd67dd05812d39dca579320c493048e26c4a556048a12385e7ae6fc698
+  linux_sha512: dd6061c5871d7b313e1b0eec791444b911f9d9d5e28b1d7a81a265708688808c157adfba92459511e9b786d09e3f96f5bc3c03980360061344ad8e225e165f6a
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 
