@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2024-04-23T09:14:47Z by kres ebc009d.
+# Generated on 2024-08-08T07:05:38Z by kres dbf015a.
 
 # common variables
 
@@ -11,13 +11,9 @@ BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 ARTIFACTS := _out
 IMAGE_TAG ?= $(TAG)
 OPERATING_SYSTEM := $(shell uname -s | tr '[:upper:]' '[:lower:]')
-GOARCH := $(shell uname -m | tr '[:upper:]' '[:lower:]')
-
-ifeq ($(GOARCH),x86_64)
-  GOARCH := amd64
-endif
+GOARCH := $(shell uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
 REGISTRY ?= ghcr.io
-USERNAME ?= nberlee
+USERNAME ?= skyssolutions
 REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
 KRES_IMAGE ?= ghcr.io/siderolabs/kres:latest
 CONFORMANCE_IMAGE ?= ghcr.io/siderolabs/conform:latest
@@ -29,7 +25,7 @@ SOURCE_DATE_EPOCH := $(shell git log $(INITIAL_COMMIT_SHA) --pretty=%ct)
 
 # sync bldr image with pkgfile
 
-BLDR_RELEASE := v0.3.0
+BLDR_RELEASE := v0.3.2
 BLDR_IMAGE := ghcr.io/siderolabs/bldr:$(BLDR_RELEASE)
 BLDR := docker run --rm --user $(shell id -u):$(shell id -g) --volume $(PWD):/src --entrypoint=/bldr $(BLDR_IMAGE) --root=/src
 
@@ -59,7 +55,7 @@ TARGETS = kernel
 
 # help menu
 
-define HELP_MENU_HEADER
+export define HELP_MENU_HEADER
 # Getting Started
 
 To build this project, you must have the following installed:
@@ -76,11 +72,11 @@ Linux or enable experimental features in Docker GUI for Windows or Mac.
 
 To create a builder instance, run:
 
-    docker buildx create --name local --use
+	docker buildx create --name local --use
 
 If running builds that needs to be cached aggresively create a builder instance with the following:
 
-    docker buildx create --name local --use --config=config.toml
+	docker buildx create --name local --use --config=config.toml
 
 config.toml contents:
 
@@ -107,16 +103,14 @@ respectively.
 
 endef
 
-export HELP_MENU_HEADER
-
 all: $(TARGETS)  ## Builds all targets defined.
+
+$(ARTIFACTS):  ## Creates artifacts directory.
+	@mkdir -p $(ARTIFACTS)
 
 .PHONY: clean
 clean:  ## Cleans up all artifacts.
 	@rm -rf $(ARTIFACTS)
-
-$(ARTIFACTS):  ## Creates artifacts directory.
-	@mkdir -p $(ARTIFACTS)
 
 target-%:  ## Builds the specified target defined in the Pkgfile. The build result will only remain in the build cache.
 	@$(BUILD) --target=$* $(COMMON_ARGS) $(TARGET_ARGS) $(CI_ARGS) .
@@ -154,8 +148,7 @@ help:  ## This help menu.
 	@grep -E '^[a-zA-Z%_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: release-notes
-release-notes:
-	mkdir -p $(ARTIFACTS)
+release-notes: $(ARTIFACTS)
 	@ARTIFACTS=$(ARTIFACTS) ./hack/release.sh $@ $(ARTIFACTS)/RELEASE_NOTES.md $(TAG)
 
 .PHONY: conformance

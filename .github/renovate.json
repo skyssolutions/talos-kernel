@@ -6,7 +6,6 @@
         ":semanticCommitScopeDisabled",
         "schedule:earlyMondays"
     ],
-    "prHeader": "Update Request | Renovate Bot",
     "regexManagers": [
         {
             "fileMatch": [
@@ -25,6 +24,24 @@
                 "#\\s?renovate: ?\\s+depName=(?<depName>.+?)?\\s(?:.*_(?:version|VERSION):\\s+(?<currentValue>.*))"
             ],
             "datasourceTemplate": "docker"
+        },
+        {
+            "fileMatch": ["^/Pkgfile"],
+            "matchStrings": [
+                "linux_version: (?<version>.*)\\n",
+                "linux_sha256: (?<sha256>[a-f0-9]{64})\\n",
+                "linux_sha512: (?<sha512>[a-f0-9]{128})\\n"
+            ],
+            "datasourceTemplate": "git-tags",
+            "extractVersionTemplate": "^v(?<version>.*)$",
+            "depNameTemplate": "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+            "versioningTemplate": "semver",
+            "lookupNameTemplate": "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+            "replaceStrings": [
+                "linux_version: ${version}\\n",
+                "linux_sha256: ${sha256}\\n",
+                "linux_sha512: ${sha512}\\n"
+            ]
         },
         {
             "fileMatch": [
@@ -46,6 +63,12 @@
                 "ARM-software/arm-trusted-firmware"
             ],
             "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.?(?<patch>\\d+)?$"
+        },
+        {
+            "matchPackageNames": [
+                "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git"
+            ],
+            "allowedVersions": "<= 6.10"
         },
         {
             "matchPackagePatterns": [
