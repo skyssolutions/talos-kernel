@@ -28,20 +28,12 @@
         {
             "fileMatch": ["^/Pkgfile"],
             "matchStrings": [
-                "linux_version: (?<version>.*)\\n",
-                "linux_sha256: (?<sha256>[a-f0-9]{64})\\n",
-                "linux_sha512: (?<sha512>[a-f0-9]{128})\\n"
+                "linux_version: (?<version>.*)\\nlinux_sha256: (?<sha256>[a-f0-9]{64})\\nlinux_sha512: (?<sha512>[a-f0-9]{128})"
             ],
             "datasourceTemplate": "git-tags",
             "extractVersionTemplate": "^v(?<version>.*)$",
             "depNameTemplate": "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-            "versioningTemplate": "semver",
-            "lookupNameTemplate": "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-            "replaceStrings": [
-                "linux_version: ${version}\\n",
-                "linux_sha256: ${sha256}\\n",
-                "linux_sha512: ${sha512}\\n"
-            ]
+            "versioningTemplate": "semver"
         },
         {
             "fileMatch": [
