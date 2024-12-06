@@ -1,4 +1,4 @@
-name: rpi-kernel-prepare
+name: kernel-rpi-prepare
 variant: scratch
 shell: /toolchain/bin/bash
 dependencies:

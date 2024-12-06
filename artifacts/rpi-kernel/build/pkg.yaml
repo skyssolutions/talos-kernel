@@ -1,8 +1,8 @@
-name: rpi-kernel-build
+name: kernel-rpi-build
 variant: scratch
 shell: /toolchain/bin/bash
 dependencies:
-  - stage: rpi-kernel-prepare
+  - stage: kernel-rpi-prepare
 steps:
   - env:
       CARCH: {{ if eq .ARCH "aarch64"}}arm64{{ else if eq .ARCH "x86_64" }}amd64{{ else }}unsupported{{ end }}
