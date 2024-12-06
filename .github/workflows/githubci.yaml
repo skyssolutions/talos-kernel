@@ -18,9 +18,14 @@ jobs:
       matrix:
         include:
           - platform: amd64
-            runner: buildjet-8vcpu-ubuntu-2204
+            runner: ubuntu-latest
+            pkg: kernel
+          - platform: arm64
+            runner: buildjet-8vcpu-ubuntu-2204-arm
+            pkg: kernel
           - platform: arm64
             runner: buildjet-16vcpu-ubuntu-2204-arm
+            pkg: rpi-kernel
 
     permissions:
       contents: read
@@ -52,15 +57,15 @@ jobs:
           username: ${{ secrets.HARBOR_USER }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
-      - name: Build turingrk1 kernel image
-        run: make
+      - name: Build kernel image
+        run: make ${{ matrix.pkg }}
         env:
           PUSH: '1'
           USERNAME: library
           PLATFORM: linux/${{ matrix.platform }}
           PROGRESS: plain
           REGISTRY: registry.skysolutions.fi
-          CI_ARGS: "--cache-from=ghcr.io/${{ github.repository }}:cache-${{ matrix.platform }} --cache-to=ghcr.io/${{ github.repository }}:cache-${{ matrix.platform }} --tag=registry.skysolutions.fi/library/talos/kernel:${{ matrix.platform }}"
+          CI_ARGS: "--cache-from=ghcr.io/${{ github.repository }}:cache-${{ matrix.platform }}-${{ matrix.pkg }} --cache-to=ghcr.io/${{ github.repository }}:cache-${{ matrix.platform }}-${{ matrix.pkg }} --tag=registry.skysolutions.fi/library/talos/${{ matrix.pkg }}:${{ matrix.platform }}"
 
   merge:
     runs-on: buildjet-4vcpu-ubuntu-2204
