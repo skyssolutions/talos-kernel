@@ -1,11 +1,11 @@
 # commit to be tagged for the new release
 commit = "HEAD"
 
-project_name = "sbc-turingrk1"
+project_name = "talos-kernel"
 github_repo = "skyssolutions/talos-kernel"
 match_deps = "^github.com/(skyssolutions/[a-zA-Z0-9-]+)$"
 
-# previous = -
+previous = "v1.8.0"
 # pre_release = true
 
 # [notes]
