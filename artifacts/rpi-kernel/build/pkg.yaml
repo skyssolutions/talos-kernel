@@ -10,8 +10,8 @@ steps:
     prepare:
       - |
         cd /src
-        #cp -v /pkg/config-${CARCH} .config
-        #cp -v /pkg/certs/* certs/
+        cp -v /pkg/config-${CARCH} .config
+        cp -v /pkg/certs/* certs/
       - |
         cd /src
         for patch in $(find /pkg/patches -type f -name "*.patch" | sort); do
