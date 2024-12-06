@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2024-12-06T02:53:24Z by kres 232fe63.
+# Generated on 2024-12-06T05:04:07Z by kres 232fe63.
 
 # common variables
 
@@ -36,13 +36,20 @@ PLATFORM ?= linux/amd64,linux/arm64
 PROGRESS ?= auto
 PUSH ?= false
 CI_ARGS ?=
-BUILDKIT_MULTI_PLATFORM ?= 0
+BUILDKIT_MULTI_PLATFORM ?= 1
 COMMON_ARGS = --file=Pkgfile
 COMMON_ARGS += --provenance=false
 COMMON_ARGS += --progress=$(PROGRESS)
 COMMON_ARGS += --platform=$(PLATFORM)
 COMMON_ARGS += --build-arg=SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH)
 COMMON_ARGS += --build-arg=BUILDKIT_MULTI_PLATFORM=$(BUILDKIT_MULTI_PLATFORM)
+COMMON_ARGS += --build-arg=PKGS_PREFIX="$(PKGS_PREFIX)"
+COMMON_ARGS += --build-arg=PKGS="$(PKGS)"
+
+# extra variables
+
+PKGS_PREFIX ?= ghcr.io/siderolabs
+PKGS ?= v1.9.0-1-gb047e41
 
 # targets defines all the available targets
 
@@ -149,7 +156,7 @@ kernel-olddefconfig:
 kernel-%:
 	for platform in $(shell echo $(PLATFORM) | tr "," " "); do \
 	  arch=`basename $$platform` ; \
-	  $(MAKE) docker-kernel-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch --load"; \
+	  $(MAKE) docker-kernel-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch --no-cache --load"; \
 	  docker run --rm -it --entrypoint=/toolchain/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/kernel/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
 	done
 

@@ -19,7 +19,8 @@ steps:
             mv arch/x86/boot/bzImage /rootfs/boot/vmlinuz
           ;;
           arm64)
-            cp arch/arm64/boot/vmlinuz.efi /rootfs/boot/vmlinuz
+            ls -al arch/arm64/boot
+            cp -v arch/arm64/boot/Image /rootfs/boot/vmlinuz
             cd ./arch/arm64/boot/dts
             for vendor in $(find . -not -path . -type d); do
               dest="/rootfs/dtb/$vendor"
