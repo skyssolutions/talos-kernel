@@ -2,9 +2,10 @@ name: kernel
 
 on:
   push:
-    branches: ['main', 'release-*']
+    branches: ['release-*']
     tags:
       - "v*"
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
