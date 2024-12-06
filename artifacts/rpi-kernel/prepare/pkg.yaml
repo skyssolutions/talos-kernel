@@ -1,37 +1,37 @@
-name: kernel-prepare
+name: rpi-kernel-prepare
 variant: scratch
 shell: /toolchain/bin/bash
 dependencies:
   - image: '{{ .TOOLS_IMAGE }}'
 steps:
   - sources:
-      - url: https://cdn.kernel.org/pub/linux/kernel/v{{ regexReplaceAll ".\\d+\\.\\d+$" .linux_version "${1}" }}.x/linux-{{ .linux_version }}.tar.xz
-        destination: linux.tar.xz
-        sha256: "{{ .linux_sha256 }}"
-        sha512: "{{ .linux_sha512 }}"
+      - url: https://github.com/raspberrypi/linux/archive/{{ .linux_rpi_ref }}.tar.gz
+        destination: linux_rpi.tar.gz
+        sha256: "{{ .linux_rpi_sha256 }}"
+        sha512: "{{ .linux_rpi_sha512 }}"
     env:
       ARCH: {{ if eq .ARCH "aarch64"}}arm64{{ else if eq .ARCH "x86_64" }}x86_64{{ else }}unsupported{{ end }}
     prepare:
       - |
-        tar -xJf linux.tar.xz --strip-components=1
-        rm linux.tar.xz
-
+        tar -xzf linux_rpi.tar.gz --strip-components=1
+        rm linux_rpi.tar.gz
+        
         mkdir /bin
         ln -sv /toolchain/bin/bash /bin/bash
         ln -sv /toolchain/bin/bash /bin/sh
         ln -sv /toolchain/lib /lib
         mkdir -p /usr/bin \
-            && ln -sf /toolchain/bin/env /usr/bin/env \
-            && ln -sf /toolchain/bin/true /bin/true \
-            && ln -sf /toolchain/bin/false /bin/false \
-            && ln -sf /toolchain/bin/pwd /bin/pwd
-      
+        && ln -sf /toolchain/bin/env /usr/bin/env \
+        && ln -sf /toolchain/bin/true /bin/true \
+        && ln -sf /toolchain/bin/false /bin/false \
+        && ln -sf /toolchain/bin/pwd /bin/pwd
+        
         # Ensure that `make menuconfig` works.
         
         ln -s /toolchain/bin/awk /usr/bin/awk
         mkdir -p /usr/lib/pkgconfig
         ln -s /toolchain/include /usr/include
-        
+      
         make mrproper
     install:
       - |

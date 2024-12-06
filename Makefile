@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2024-08-08T07:05:38Z by kres dbf015a.
+# Generated on 2024-12-06T00:58:57Z by kres 232fe63.
 
 # common variables
 
@@ -36,22 +36,18 @@ PLATFORM ?= linux/amd64,linux/arm64
 PROGRESS ?= auto
 PUSH ?= false
 CI_ARGS ?=
+BUILDKIT_MULTI_PLATFORM ?= 0
 COMMON_ARGS = --file=Pkgfile
 COMMON_ARGS += --provenance=false
 COMMON_ARGS += --progress=$(PROGRESS)
 COMMON_ARGS += --platform=$(PLATFORM)
 COMMON_ARGS += --build-arg=SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH)
-COMMON_ARGS += --build-arg=PKGS_PREFIX="$(PKGS_PREFIX)"
-COMMON_ARGS += --build-arg=PKGS="$(PKGS)"
-
-# extra variables
-
-PKGS_PREFIX ?= ghcr.io/siderolabs
-PKGS ?= v1.7.0
+COMMON_ARGS += --build-arg=BUILDKIT_MULTI_PLATFORM=$(BUILDKIT_MULTI_PLATFORM)
 
 # targets defines all the available targets
 
 TARGETS = kernel
+TARGETS += kernel-rpi
 
 # help menu
 
@@ -117,6 +113,15 @@ target-%:  ## Builds the specified target defined in the Pkgfile. The build resu
 
 local-%:  ## Builds the specified target defined in the Pkgfile using the local output type. The build result will be output to the specified local destination.
 	@$(MAKE) target-$* TARGET_ARGS="--output=type=local,dest=$(DEST) $(TARGET_ARGS)"
+	@PLATFORM=$(PLATFORM) DEST=$(DEST) bash -c '\
+	  for platform in $$(tr "," "\n" <<< "$$PLATFORM"); do \
+	    echo $$platform; \
+	    directory="$${platform//\//_}"; \
+	    if [[ -d "$$DEST/$$directory" ]]; then \
+	      mv "$$DEST/$$directory/"* $$DEST; \
+	      rmdir "$$DEST/$$directory/"; \
+	    fi; \
+	  done'
 
 docker-%:  ## Builds the specified target defined in the Pkgfile using the docker output type. The build result will be loaded into Docker.
 	@$(MAKE) target-$* TARGET_ARGS="$(TARGET_ARGS)"
@@ -137,6 +142,27 @@ $(TARGETS):
 deps.png:  ## Generates a dependency graph of the Pkgfile.
 	@$(BLDR) graph | dot -Tpng -o deps.png
 
+kernel-olddefconfig:
+	@$(MAKE) local-kernel-build TARGET_ARGS="--build-arg=KERNEL_TARGET=olddefconfig" PLATFORM=linux/amd64 DEST="kernel/build"
+	@$(MAKE) local-kernel-build TARGET_ARGS="--build-arg=KERNEL_TARGET=olddefconfig" PLATFORM=linux/arm64 DEST="kernel/build"
+
+rpi-kernel-bcm2712-config:
+	@$(MAKE) local-rpi-kernel-build TARGET_ARGS="--build-arg=KERNEL_TARGET=bcm2712_defconfig" PLATFORM=linux/arm64 DEST="rpi-kernel/build"
+
+kernel-%:
+	for platform in $(shell echo $(PLATFORM) | tr "," " "); do \
+	  arch=`basename $$platform` ; \
+	  $(MAKE) docker-kernel-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch --load"; \
+	  docker run --rm -it --entrypoint=/toolchain/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/kernel/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
+	done
+
+rpi-kernel-%:
+	for platform in $(shell echo $(PLATFORM) | tr "," " "); do \
+	  arch=`basename $$platform` ; \
+	  $(MAKE) docker-rpi-kernel-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch --load"; \
+	  docker run --rm -it --entrypoint=/toolchain/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/rpi-kernel/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
+	done
+
 .PHONY: rekres
 rekres:
 	@docker pull $(KRES_IMAGE)
@@ -156,13 +182,3 @@ conformance:
 	@docker pull $(CONFORMANCE_IMAGE)
 	@docker run --rm -it -v $(PWD):/src -w /src $(CONFORMANCE_IMAGE) enforce
 
-kernel-olddefconfig:
-	@$(MAKE) local-kernel-build TARGET_ARGS="--build-arg=KERNEL_TARGET=olddefconfig" PLATFORM=linux/amd64 DEST="kernel/build"
-	@$(MAKE) local-kernel-build TARGET_ARGS="--build-arg=KERNEL_TARGET=olddefconfig" PLATFORM=linux/arm64 DEST="kernel/build"
-
-kernel-%:
-	for platform in $(shell echo $(PLATFORM) | tr "," " "); do \
-	  arch=`basename $$platform` ; \
-	  $(MAKE) docker-kernel-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch --load"; \
-	  docker run --rm -it --entrypoint=/toolchain/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/artifacts/kernel/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
-	done
