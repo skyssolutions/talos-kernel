@@ -25,7 +25,7 @@ jobs:
             pkg: kernel
           - platform: arm64
             runner: buildjet-16vcpu-ubuntu-2204-arm
-            pkg: rpi-kernel
+            pkg: kernel-rpi
 
     permissions:
       contents: read
