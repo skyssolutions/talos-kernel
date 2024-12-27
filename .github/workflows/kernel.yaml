@@ -19,7 +19,7 @@ jobs:
       matrix:
         include:
           - platform: amd64
-            runner: ubuntu-latest
+            runner: buildjet-8vcpu-ubuntu-2204
             pkg: kernel
           - platform: arm64
             runner: buildjet-8vcpu-ubuntu-2204-arm
