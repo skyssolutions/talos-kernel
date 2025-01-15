@@ -6,9 +6,9 @@ vars:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/tools
   TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.10.0-alpha.0
 
-  linux_rpi_ref: 545eb1a62b733857dd4556dfd67e6c81d73fc0e4
-  linux_rpi_sha256: 917b0aeb157b61417eae8b506f1f989ea511a9db4f16e38ecda3dfd2e81fe5c8
-  linux_rpi_sha512: c667cd74c12cb15d9e9ab763833aa7d225120cee880a3ed73ec511c8f7cff65025ccd32a9b8df14397e7aa6eefd7a62308466ae57276de05ce3f2de0ddf91619
+  linux_rpi_ref: c2ec0c0e0c8992a4f183de5ae782ee220818c938
+  linux_rpi_sha256: 91108ebc3828d0c8fb949bc9e04d77f35fedd6f04afb7982ac0eccaae9901189
+  linux_rpi_sha512: 833ee57ba514bed29c9b20b7f9dfe2cc7d41da02a834d5ee10270576e5799fc2695a001607e6510123c5f83322a1e55ce76a28c0960fee19d62cfa46abdb7a06
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
   linux_version: 6.12.1
