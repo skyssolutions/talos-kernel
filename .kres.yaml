@@ -12,7 +12,7 @@ spec:
       - name: PKGS_PREFIX
         defaultValue: ghcr.io/siderolabs
       - name: PKGS
-        defaultValue: v1.9.0-1-gb047e41
+        defaultValue: v1.9.0-21-gc1f06e5
 ---
 kind: auto.CustomSteps
 spec:
