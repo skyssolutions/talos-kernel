@@ -14,6 +14,10 @@ vars:
   linux_version: 6.12.1
   linux_sha256: 0193b1d86dd372ec891bae799f6da20deef16fc199f30080a4ea9de8cef0c619
   linux_sha512: c7523dc5b012367301ab43a685b766dce025c4993041acd3dacd085b052b3fccc7f50c892357acf481e24ccad512770ef46a13d2da16c2a178c44a27f7022932
+
+  siderolabs_pkgs_version: a0c92b12e94963378f09cf1c700b596920afc17b
+  siderolabs_pkgs_sha256: 4fb1515c50cd7143925f24e409a6a580cee851d3dca5710972c8f60f892611ed
+  siderolabs_pkgs_sha512: b05efc947ea283aa36a0bd345a920c3062a78b03e336f549931e2f42bd48347e1fbb6278f1ecef02813585a34a9ed8658a522d2709d874127d7ce056ae2eec2f
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 

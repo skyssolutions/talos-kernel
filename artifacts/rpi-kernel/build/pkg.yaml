@@ -4,14 +4,22 @@ shell: /toolchain/bin/bash
 dependencies:
   - stage: kernel-rpi-prepare
 steps:
-  - env:
+  - sources:
+      - url: https://raw.githubusercontent.com/siderolabs/pkgs/{{ .siderolabs_pkgs_version }}/kernel/build/config-arm64
+        destination: siderolabs-kernel-arm64-config
+        sha256: "{{ .siderolabs_pkgs_sha256 }}"
+        sha512: "{{ .siderolabs_pkgs_sha512 }}"
+    env:
       CARCH: {{ if eq .ARCH "aarch64"}}arm64{{ else if eq .ARCH "x86_64" }}amd64{{ else }}unsupported{{ end }}
       ARCH: {{ if eq .ARCH "aarch64"}}arm64{{ else if eq .ARCH "x86_64" }}x86{{ else }}unsupported{{ end }}
     prepare:
       - |
+        cp -v siderolabs-kernel-arm64-config /src/
         cd /src
         cp -v /pkg/config-${CARCH} .config
         cp -v /pkg/certs/* certs/
+
+        ./scripts/kconfig/merge_config.sh /src/.config /src/siderolabs-kernel-arm64-config
       - |
         cd /src
         for patch in $(find /pkg/patches -type f -name "*.patch" | sort); do
