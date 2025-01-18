@@ -21,6 +21,7 @@ steps:
           arm64)
             ls -al arch/arm64/boot
             cp -v arch/arm64/boot/Image /rootfs/boot/vmlinuz
+            cp -v arch/arm64/boot/vmlinuz.efi /rootfs/boot/vmlinuz.efi
             cd ./arch/arm64/boot/dts
             for vendor in $(find . -not -path . -type d); do
               dest="/rootfs/dtb/$vendor"
