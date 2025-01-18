@@ -9,82 +9,50 @@
     "customManagers": [
         {
             "customType": "regex",
+            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
             "fileMatch": [
                 "Pkgfile"
             ],
             "matchStrings": [
                 "# renovate: datasource=(?<datasource>.*?)(?:\\s+extractVersion=(?<extractVersion>.+?))?(?:\\s+versioning=(?<versioning>.+?))?\\s+depName=(?<depName>.+?)?\\s(?:\\s+.*_(?:version|VERSION):\\s+(?<currentValue>.*))?(?:\\s.*_(?:ref|REF):\\s+(?<currentDigest>.*))?"
-            ],
-            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+            ]
         },
         {
             "customType": "regex",
+            "datasourceTemplate": "github-tags",
+            "depNameTemplate": "siderolabs/bldr",
+            "versioningTemplate": "semver",
             "fileMatch": [
                 "Pkgfile"
             ],
             "matchStrings": [
-                "#\\s?renovate: ?\\s+depName=(?<depName>.+?)?\\s(?:.*_(?:version|VERSION):\\s+(?<currentValue>.*))"
-            ],
-            "datasourceTemplate": "docker"
-        },
-        {
-            "customType": "regex",
-            "fileMatch": [
-                "Pkgfile",
-                "Makefile"
-            ],
-            "matchStrings": [
                 "ghcr.io\\/siderolabs\\/bldr:(?<currentValue>v.*)"
-            ],
-            "depNameTemplate": "siderolabs/bldr",
-            "datasourceTemplate": "github-tags",
-            "versioningTemplate": "semver"
+            ]
         }
     ],
     "packageRules": [
         {
-            "matchPackageNames": [
-                "u-boot/u-boot",
-                "ARM-software/arm-trusted-firmware"
-            ],
-            "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.?(?<patch>\\d+)?$"
-        },
-        {
-            "matchPackageNames": [
-                "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git"
-            ],
-            "allowedVersions": "<= 6.10"
-        },
-        {
-            "matchDatasources": [
-                "docker"
-            ],
-            "groupName": "container images",
-            "matchPackageNames": [
-                "*"
+            "groupName": "dependencies",
+            "matchUpdateTypes": [
+                "major",
+                "minor",
+                "patch",
+                "pin",
+                "digest"
             ]
         },
         {
-            "matchDatasources": [
-                "go",
-                "golang-version"
-            ],
-            "groupName": "go packages",
-            "matchPackageNames": [
-                "*"
+            "enabled": false,
+            "matchFileNames": [
+                "Dockerfile"
             ]
         },
         {
-            "matchDatasources": [
-                "git-refs",
-                "git-tags",
-                "github-tags",
-                "github-releases"
-            ],
-            "groupName": "releases",
-            "matchPackageNames": [
-                "*"
+            "enabled": false,
+            "matchFileNames": [
+                ".github/workflows/*.yaml"
             ]
         }
-    ]
+    ],
+    "separateMajorMinor": false
 }
