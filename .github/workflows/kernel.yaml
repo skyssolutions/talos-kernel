@@ -22,7 +22,7 @@ jobs:
             runner: buildjet-8vcpu-ubuntu-2204
             pkg: kernel
           - platform: arm64
-            runner: buildjet-16vcpu-ubuntu-2204-arm
+            runner: ubuntu-24.04-arm
             pkg: kernel
 
     permissions:

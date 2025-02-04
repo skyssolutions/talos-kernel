@@ -19,7 +19,7 @@ jobs:
       matrix:
         include:
           - platform: arm64
-            runner: buildjet-16vcpu-ubuntu-2204-arm
+            runner: ubuntu-24.04-arm
             pkg: kernel-rpi
 
     permissions:
@@ -53,11 +53,11 @@ jobs:
           password: ${{ secrets.HARBOR_PASSWORD }}
 
       - name: Build kernel image
-        run: make ${{ matrix.pkg }}
+        run: make kernel-rpi
         env:
           PUSH: '1'
           USERNAME: library
-          PLATFORM: linux/${{ matrix.platform }}
+          PLATFORM: linux/arm64
           PROGRESS: plain
           REGISTRY: registry.skysolutions.fi
-          CI_ARGS: "--cache-from=ghcr.io/${{ github.repository }}:cache-${{ matrix.platform }}-${{ matrix.pkg }} --cache-to=ghcr.io/${{ github.repository }}:cache-${{ matrix.platform }}-${{ matrix.pkg }} --tag=registry.skysolutions.fi/library/talos/${{ matrix.pkg }}:${{ matrix.platform }}"
+          CI_ARGS: "--cache-from=ghcr.io/${{ github.repository }}:cache-arm64-kernel-rpi --cache-to=ghcr.io/${{ github.repository }}:cache-${{ matrix.platform }}-${{ matrix.pkg }} --tag=registry.skysolutions.fi/library/talos/${{ matrix.pkg }}:${{ matrix.platform }}"

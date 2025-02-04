@@ -6,18 +6,18 @@ vars:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/tools
   TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.10.0-alpha.0
 
-  linux_rpi_ref: 26e9c58fd607444366f03009ad377fd85b470c2f
-  linux_rpi_sha256: f02d6038b657c4d2bf679a00d33f6f7a0f935cd361bc5ccf6e50ef64db693789
-  linux_rpi_sha512: 7873ca4bc3cd2092989b56ca2b5699d4b2c4d4f271a7e1deb5176e4b8b3921cade528d7d6637e2109fc573e2512516b63f2fbbc3ddaa41cec0ca67818d4516a0
+  linux_rpi_ref: 604cca8d9e56f396b48cc1059133e17d1daf5c0d
+  linux_rpi_sha256: 2129b589e040b6e592b768459d5d6e5d9169c6488006f2ba7d6b58e1d5f2aedd
+  linux_rpi_sha512: 5a8a662d915582e8422595fdb8ffdbe4f0b96d5f65197c89daa464641b80bbebaab9fd16958da297b58182e8114a02a483c8d57a581b41d36a4ad1ece43a1cdd
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-  linux_version: 6.12.10
-  linux_sha256: 4a516e5ed748537a73cb42ec47fbbeb6df8b1298e8892c29c0e91de79095b297
-  linux_sha512: 34252b61399495e71c945b617e05d2c55e44a0d9ac0b118bbfc698da54927550f33d067ca6ee8bb2fbcc773aba767ddfaea4c52c3fa357771c69793b76cd75d1
+  linux_version: 6.12.11
+  linux_sha256: 475172fdbd87a153f123a57952672e773bdb6daf5b58a417d1a5e419fcfeec49
+  linux_sha512: f5c1af5de024da71193fb359125087246d0f98f7d21b53382e7b53a59c6eab201e37b35a8e2d340c2e89775e05dd23de55f731c1c4268a03e365d0c67fdebd2a
 
-  siderolabs_pkgs_version: 45b9ebed9437752c6516792678356a595f1ec62b
-  siderolabs_pkgs_sha256: c4c75c5905fbdf1d88eb118405a5f655d324aae80a88696949f43b5930f49847
-  siderolabs_pkgs_sha512: 672efbca2f64feaa5913b2d3ea44810318b010dc8c8ec7fa42990fbed277d363a21df7efdf75cd9dfcc5656ab5eeb7dbe582a6d17250cad0485d1d18c319e322
+  siderolabs_pkgs_version: 1e24b31dc379251ad5248f94f548e5c7330f59ec
+  siderolabs_pkgs_sha256: b1f2240e3c3db08f5508f764eabba1b205339196c11799577d64891d990ffa28
+  siderolabs_pkgs_sha512: 430f6fdf7a3050cebb79faacba9119b73618748e94996673d15daaa5e76d4af490ebd930e882145b5b408011e9b2f8d307f7ef5fd42383ca787d52cd9c6ab594
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 
