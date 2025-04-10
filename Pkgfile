@@ -4,20 +4,20 @@ format: v1alpha2
 
 vars:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/tools
-  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.10.0-alpha.0
+  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.10.0-alpha.0-24-g4f2036e
 
-  linux_rpi_ref: 604cca8d9e56f396b48cc1059133e17d1daf5c0d
-  linux_rpi_sha256: 2129b589e040b6e592b768459d5d6e5d9169c6488006f2ba7d6b58e1d5f2aedd
-  linux_rpi_sha512: 5a8a662d915582e8422595fdb8ffdbe4f0b96d5f65197c89daa464641b80bbebaab9fd16958da297b58182e8114a02a483c8d57a581b41d36a4ad1ece43a1cdd
+  linux_rpi_ref: aedbd3962a270f72c085e84ad8e41b74c08b395c
+  linux_rpi_sha256: 83e2489168fb225e3e29be77e25aa4eaa87228d3fcb348ca47e142fd495b821b
+  linux_rpi_sha512: ea91649deda8e9ab3bf1dc3af2607a3176776776d53ef8ff074d51bee6cf85e3e55ecaad0220b3f4f363b39ea9365188d85c25da531670150fe61f4c3d43f996
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-  linux_version: 6.14.1
-  linux_sha256: 475172fdbd87a153f123a57952672e773bdb6daf5b58a417d1a5e419fcfeec49
-  linux_sha512: f5c1af5de024da71193fb359125087246d0f98f7d21b53382e7b53a59c6eab201e37b35a8e2d340c2e89775e05dd23de55f731c1c4268a03e365d0c67fdebd2a
+  linux_version: 6.14.2
+  linux_sha256: 989d952d259729c2ec27a0548e5a287bc6d7c4a977a7751e09f2c018523bfb76cc1db3166965d8ba7f0ff996bcab29e4825066db4c2f94986b065f430e347cc2
+  linux_sha512: c5c682a354ea3190139357a57d34a79e5c37221ace823a938e10116b577a2e1b
 
-  siderolabs_pkgs_version: 1e24b31dc379251ad5248f94f548e5c7330f59ec
-  siderolabs_pkgs_sha256: b1f2240e3c3db08f5508f764eabba1b205339196c11799577d64891d990ffa28
-  siderolabs_pkgs_sha512: 430f6fdf7a3050cebb79faacba9119b73618748e94996673d15daaa5e76d4af490ebd930e882145b5b408011e9b2f8d307f7ef5fd42383ca787d52cd9c6ab594
+  siderolabs_pkgs_version: e331e5983af33b1bd8cf6fa1f7f0385b170e4a1c
+  siderolabs_pkgs_sha256: 4a017d58cc7217423a6e31d2f5e28e53062283152da0e49a2edcdc71da8a42bd
+  siderolabs_pkgs_sha512: 6b936766bb5c18c29fa8092aff595d8520f9f25f91c4ab33e63548fd0e0462408f67e237cb7b86dd2c42d0c7d146100ad94bfa8041c48b7a34b8795b0b5069fb
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 
