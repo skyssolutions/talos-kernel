@@ -44,10 +44,4 @@ finalize:
     to: /src
   - from: /toolchain
     to: /toolchain
-  - from: /usr
-    to: /usr
-  - from: /bin
-    to: /bin
-  - from: /lib
-    to: /lib
   {{ end }}

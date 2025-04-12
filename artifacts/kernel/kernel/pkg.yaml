@@ -1,6 +1,6 @@
 name: kernel
 variant: scratch
-shell: /toolchain/bin/bash
+shell: /bin/bash
 dependencies:
   - stage: kernel-build
 steps:
