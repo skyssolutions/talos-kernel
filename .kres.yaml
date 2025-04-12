@@ -43,7 +43,7 @@ spec:
     enabled: true
     script:
       - |
-        @$(MAKE) local-kernel-rpi-build TARGET_ARGS="--build-arg=KERNEL_TARGET=bcm2712_defconfig" PLATFORM=linux/arm64 DEST="rpi-kernel/build"
+        @$(MAKE) local-kernel-rpi-build TARGET_ARGS="--build-arg=KERNEL_TARGET=bcm2712_defconfig" PLATFORM=linux/arm64 DEST="kernel-rpi/build"
 ---
 kind: custom.Step
 name: kernel-%

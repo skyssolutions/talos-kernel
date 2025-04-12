@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2025-04-12T16:29:16Z by kres d903dae.
+# Generated on 2025-04-12T17:26:57Z by kres d903dae.
 
 # common variables
 
@@ -157,7 +157,7 @@ kernel-rpi-%:
 	done
 
 kernel-rpi-bcm2712-defconfig:
-	@$(MAKE) local-kernel-rpi-build TARGET_ARGS="--build-arg=KERNEL_TARGET=bcm2712_defconfig" PLATFORM=linux/arm64 DEST="rpi-kernel/build"
+	@$(MAKE) local-kernel-rpi-build TARGET_ARGS="--build-arg=KERNEL_TARGET=bcm2712_defconfig" PLATFORM=linux/arm64 DEST="kernel-rpi/build"
 
 .PHONY: rekres
 rekres:
