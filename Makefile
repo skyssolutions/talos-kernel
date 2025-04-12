@@ -153,7 +153,7 @@ kernel-rpi-%:
 	for platform in $(shell echo $(PLATFORM) | tr "," " "); do \
 	  arch=`basename $$platform` ; \
 	  $(MAKE) docker-kernel-rpi-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch --load"; \
-	  docker run --rm -it --entrypoint=/bin/bash -w /src -v $$PWD/artifacts/rpi-kernel/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
+	  docker run --rm -it --entrypoint=/bin/bash -w /src -v $$PWD/artifacts/kernel-rpi/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
 	done
 
 kernel-rpi-bcm2712-defconfig:
