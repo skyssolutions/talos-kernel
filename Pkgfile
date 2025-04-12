@@ -4,7 +4,7 @@ format: v1alpha2
 
 vars:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/tools
-  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.10.0-alpha.0
+  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.9.0
 
   linux_rpi_ref: b1f366d424ca3cc6e58020c7d3715af32e3fe011
   linux_rpi_sha256: 1ea44487a550c451010bcf4d3e6d205c1d1e35f01c5d6c49116a230f86809011
