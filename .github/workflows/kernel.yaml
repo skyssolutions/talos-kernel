@@ -1,10 +1,10 @@
 name: kernel
 
 on:
-  push:
-    branches: ['release-*']
-    tags:
-      - "v*"
+#  push:
+#    branches: ['release-*']
+#    tags:
+#      - "v*"
   workflow_dispatch:
 
 concurrency:

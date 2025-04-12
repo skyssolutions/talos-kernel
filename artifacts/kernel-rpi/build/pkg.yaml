@@ -1,6 +1,6 @@
 name: kernel-rpi-build
 variant: scratch
-shell: /bin/bash
+shell: /toolchain/bin/bash
 dependencies:
   - stage: kernel-rpi-prepare
 steps:
@@ -52,4 +52,10 @@ finalize:
     to: /src
   - from: /toolchain
     to: /toolchain
+  - from: /usr
+    to: /usr
+  - from: /bin
+    to: /bin
+  - from: /lib
+    to: /lib
   {{ end }}

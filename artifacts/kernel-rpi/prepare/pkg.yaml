@@ -1,6 +1,6 @@
 name: kernel-rpi-prepare
 variant: scratch
-shell: /bin/bash
+shell: /toolchain/bin/bash
 dependencies:
   - image: '{{ .TOOLS_IMAGE }}'
 steps:
@@ -13,12 +13,39 @@ steps:
       ARCH: {{ if eq .ARCH "aarch64"}}arm64{{ else if eq .ARCH "x86_64" }}x86_64{{ else }}unsupported{{ end }}
     prepare:
       - |
-        mkdir -p /src
-        tar -xzf linux_rpi.tar.gz --strip-components=1 -C /src
+        tar -xzf linux_rpi.tar.gz --strip-components=1
         rm linux_rpi.tar.gz
+      
+        mkdir /bin
+        ln -sv /toolchain/bin/bash /bin/bash
+        ln -sv /toolchain/bin/bash /bin/sh
+        ln -sv /toolchain/lib /lib
+        mkdir -p /usr/bin \
+        && ln -sf /toolchain/bin/env /usr/bin/env \
+        && ln -sf /toolchain/bin/true /bin/true \
+        && ln -sf /toolchain/bin/false /bin/false \
+        && ln -sf /toolchain/bin/pwd /bin/pwd
         
-        cd /src
+        # Ensure that `make menuconfig` works.
+        ln -s /toolchain/bin/awk /usr/bin/awk
+        
+        mkdir -p /usr/lib/pkgconfig
+        ln -s /toolchain/include /usr/include
+        
         make mrproper
+    install:
+      - |
+        mkdir -p /src
+        cp -a . /src/
+
 finalize:
-  - from: /
-    to: /
+  - from: /src
+    to: /src
+  - from: /toolchain
+    to: /toolchain
+  - from: /usr
+    to: /usr
+  - from: /bin
+    to: /bin
+  - from: /lib
+    to: /lib

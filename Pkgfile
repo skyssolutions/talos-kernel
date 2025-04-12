@@ -4,7 +4,7 @@ format: v1alpha2
 
 vars:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/tools
-  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.10.0
+  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.10.0-alpha.0
 
   linux_rpi_ref: b1f366d424ca3cc6e58020c7d3715af32e3fe011
   linux_rpi_sha256: 1ea44487a550c451010bcf4d3e6d205c1d1e35f01c5d6c49116a230f86809011
@@ -15,9 +15,9 @@ vars:
   linux_sha256: c5c682a354ea3190139357a57d34a79e5c37221ace823a938e10116b577a2e1b
   linux_sha512: 989d952d259729c2ec27a0548e5a287bc6d7c4a977a7751e09f2c018523bfb76cc1db3166965d8ba7f0ff996bcab29e4825066db4c2f94986b065f430e347cc2
 
-  siderolabs_pkgs_version: e331e5983af33b1bd8cf6fa1f7f0385b170e4a1c
-  siderolabs_pkgs_sha256: 4a017d58cc7217423a6e31d2f5e28e53062283152da0e49a2edcdc71da8a42bd
-  siderolabs_pkgs_sha512: 6b936766bb5c18c29fa8092aff595d8520f9f25f91c4ab33e63548fd0e0462408f67e237cb7b86dd2c42d0c7d146100ad94bfa8041c48b7a34b8795b0b5069fb
+  siderolabs_pkgs_version: b39f244abbd0b732bccc3ca32708a50b2cd1961f
+  siderolabs_pkgs_sha256: 550c140ae8f03e114ee72447054b6c57ab74c73669d9b2a8d045ff2f305b66e7
+  siderolabs_pkgs_sha512: df0e530bad111b61af3a86a027de62a0fbbe122e6a04d281e0d24e2eeaddaedd32e68c75f9f9a5ade9b837e0c2b09220123bf80c566e4a7eb96d232c139a3f71
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 

@@ -1,6 +1,6 @@
 name: kernel-rpi
 variant: scratch
-shell: /bin/bash
+shell: /toolchain/bin/bash
 dependencies:
   - stage: kernel-rpi-build
 steps:
