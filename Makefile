@@ -51,8 +51,8 @@ PKGS ?= v1.9.0-21-gc1f06e5
 
 # targets defines all the available targets
 
-TARGETS = kernel
-TARGETS += kernel-rpi
+TARGETS = kernel-rpi
+# TARGETS += kernel-rpi
 
 # help menu
 

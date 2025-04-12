@@ -1,4 +1,4 @@
-# syntax = ghcr.io/siderolabs/bldr:v0.4.1
+# syntax = ghcr.io/siderolabs/bldr:v0.4.1-1-gd09e69c
 
 format: v1alpha2
 
@@ -12,8 +12,8 @@ vars:
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
   linux_version: 6.14.2
-  linux_sha256: 989d952d259729c2ec27a0548e5a287bc6d7c4a977a7751e09f2c018523bfb76cc1db3166965d8ba7f0ff996bcab29e4825066db4c2f94986b065f430e347cc2
-  linux_sha512: c5c682a354ea3190139357a57d34a79e5c37221ace823a938e10116b577a2e1b
+  linux_sha256: c5c682a354ea3190139357a57d34a79e5c37221ace823a938e10116b577a2e1b
+  linux_sha512: 989d952d259729c2ec27a0548e5a287bc6d7c4a977a7751e09f2c018523bfb76cc1db3166965d8ba7f0ff996bcab29e4825066db4c2f94986b065f430e347cc2
 
   siderolabs_pkgs_version: e331e5983af33b1bd8cf6fa1f7f0385b170e4a1c
   siderolabs_pkgs_sha256: 4a017d58cc7217423a6e31d2f5e28e53062283152da0e49a2edcdc71da8a42bd
