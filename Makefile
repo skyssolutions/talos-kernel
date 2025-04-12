@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2025-04-12T21:49:53Z by kres d903dae.
+# Generated on 2025-04-12T22:01:53Z by kres d903dae.
 
 # common variables
 
@@ -144,16 +144,16 @@ kernel-olddefconfig:
 
 kernel-%:
 	for platform in $(shell echo $(PLATFORM) | tr "," " "); do \
-	 arch=`basename $$platform` ; \
-	 $(MAKE) docker-kernel-prepare PLATFORM=$$platform BUILDKIT_MULTI_PLATFORM=0 TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch --load"; \
-	 docker run --rm -it --no-cache --entrypoint=/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/kernel/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
+	  arch=`basename $$platform` ; \
+	  $(MAKE) docker-kernel-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch --no-cache --load"; \
+	  docker run --no-cache --rm -it --entrypoint=/toolchain/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/kernel/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
 	done
 
 kernel-rpi-%:
 	for platform in $(shell echo $(PLATFORM) | tr "," " "); do \
 	  arch=`basename $$platform` ; \
 	  $(MAKE) docker-kernel-rpi-prepare PLATFORM=$$platform TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch --load"; \
-	  docker run --rm -it --no-cache --entrypoint=/toolchain/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/artifacts/kernel-rpi/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
+	  docker run --rm -it --entrypoint=/toolchain/bin/bash -e PATH=/toolchain/bin:/bin -w /src -v $$PWD/artifacts/kernel-rpi/build/config-$$arch:/host/.hostconfig $(REGISTRY)/$(USERNAME)/kernel-rpi:$(TAG)-$$arch -c 'cp /host/.hostconfig .config && make $* && cp .config /host/.hostconfig'; \
 	done
 
 kernel-rpi-bcm2712-defconfig:
