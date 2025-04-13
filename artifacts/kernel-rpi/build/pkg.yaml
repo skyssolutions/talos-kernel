@@ -19,7 +19,7 @@ steps:
         cp -v /pkg/config-${CARCH} .config
         cp -v /pkg/certs/* certs/
 
-        ./scripts/kconfig/merge_config.sh /src/.config /src/siderolabs-kernel-arm64-config
+        # ./scripts/kconfig/merge_config.sh /src/.config /src/siderolabs-kernel-arm64-config
       - |
         cd /src
         for patch in $(find /pkg/patches -type f -name "*.patch" | sort); do
