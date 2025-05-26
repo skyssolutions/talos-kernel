@@ -1,23 +1,24 @@
-# syntax = ghcr.io/siderolabs/bldr:v0.3.0
+# syntax = ghcr.io/siderolabs/bldr:v0.4.1
 
 format: v1alpha2
 
 vars:
-  # renovate: datasource=docker depName=ghcr.io/siderolabs/tools
-  TOOLS_IMAGE: ghcr.io/siderolabs/tools:v1.9.0
+  TOOLCHAIN_MUSL_IMAGE: ghcr.io/siderolabs/toolchain-musl:v1.10.0-2-g0752750
+  TOOLS_PREFIX: ghcr.io/siderolabs/
+  TOOLS_REV: v1.10.0-2-gfa51331
 
-  linux_rpi_ref: b1f366d424ca3cc6e58020c7d3715af32e3fe011
-  linux_rpi_sha256: 1ea44487a550c451010bcf4d3e6d205c1d1e35f01c5d6c49116a230f86809011
-  linux_rpi_sha512: 87bf9d403da2e6c13952aebe739030f603fa5bc3afcd01e06bcd40da09fe94dfa06d31fc83b679a958757a91caaf9150ed3debb20190dc0b825d371be907b5da
+  linux_rpi_ref: 1ec873f3f18c98f0dc6d51db5b75958e109a0e5c
+  linux_rpi_sha256: 1ec873f3f18c98f0dc6d51db5b75958e109a0e5c
+  linux_rpi_sha512: 93b4a8b35cf4aae85c634a16b301ab61f6ec526fa581cd32ac654738b88f31ac16e033322f172e492db6cfcf1c2b11a73f2b9bddd0e8c4afc2cd70d85f7b1319
 
   # renovate: datasource=git-tags extractVersion=^v(?<version>.*)$ depName=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
   linux_version: 6.14.2
   linux_sha256: c5c682a354ea3190139357a57d34a79e5c37221ace823a938e10116b577a2e1b
   linux_sha512: 989d952d259729c2ec27a0548e5a287bc6d7c4a977a7751e09f2c018523bfb76cc1db3166965d8ba7f0ff996bcab29e4825066db4c2f94986b065f430e347cc2
 
-  siderolabs_pkgs_version: b39f244abbd0b732bccc3ca32708a50b2cd1961f
-  siderolabs_pkgs_sha256: 550c140ae8f03e114ee72447054b6c57ab74c73669d9b2a8d045ff2f305b66e7
-  siderolabs_pkgs_sha512: df0e530bad111b61af3a86a027de62a0fbbe122e6a04d281e0d24e2eeaddaedd32e68c75f9f9a5ade9b837e0c2b09220123bf80c566e4a7eb96d232c139a3f71
+  siderolabs_pkgs_version: 8c4603e90335b9aaf180b954ebc43f65dcb2b7b6
+  siderolabs_pkgs_sha256: a4855de99da0d49626876b275b92247b8480f6a2ce32e8fa98571f1bd40844a4
+  siderolabs_pkgs_sha512: c6007c26869f679ebcf46c700f51aa7ed56081ab4dd19aa460eae656353a124e894eccaf5a9e47e079d14eb23e82154abc5a68ee98dd4d71ba5a158d866755ea
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-kernel
 
